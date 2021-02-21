@@ -1,0 +1,58 @@
+version: "3.5"
+services:
+  dd-api:
+    container_name: dd-api
+    image: golang:1.15-buster
+    restart: "no"
+    volumes:
+      - ".:/go/src/dice-dout"
+    ports:
+      - "5001:5000"
+    networks:
+      - dd
+    environment: 
+      - DB_HOST=dd-db
+      - DB_USER=root
+      - DB_PWD=root
+      - DB_DATABASE=dd
+      - DB_PORT=3306
+      - DB_ÑAME=dice-dout
+    env_file:
+      - .env
+
+    command: sh -c "cd /go/src/dice-dout && go get -u github.com/cosmtrek/air && air -c .air.conf"
+
+  spauth-db:
+    container_name: dd-db
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    restart: "no"
+    environment:
+      MYSQL_DATABASE: dd
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ".mysql:/var/lib/mysql"
+    ports:
+      - 3307:3306
+    networks:
+      - dd
+
+  dd-phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: dd-phpmyadmin
+    environment:
+      - PMA_HOST=dd-db
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+      - PMA_ARBITRARY=1
+    restart: "no"
+    ports:
+      - 8081:80
+    volumes:
+      - /sessions
+    networks:
+      - dd
+
+networks:
+  dd:
+    driver: bridge
