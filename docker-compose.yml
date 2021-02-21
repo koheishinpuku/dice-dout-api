@@ -20,7 +20,7 @@ services:
     env_file:
       - .env
 
-    command: sh -c "cd /go/src/github.com/koheishinpuku/dice-dout-api/app && go get -u github.com/cosmtrek/air && air -c .air.conf"
+    command: sh -c "cd /go/src/github.com/koheishinpuku/dice-dout-api && go get -u github.com/cosmtrek/air && air -c .air.conf"
 
   spauth-db:
     container_name: dd-db
