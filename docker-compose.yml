@@ -10,13 +10,13 @@ services:
       - "5001:5000"
     networks:
       - dd
-    environment: 
+    environment:
       - DB_HOST=dd-db
       - DB_USER=root
       - DB_PWD=root
-      - DB_DATABASE=dd
       - DB_PORT=3306
-      - DB_ÑAME=dice-dout
+      - DB_NAME=dicedout
+      - PORT=5000
     env_file:
       - .env
 
@@ -28,7 +28,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: "no"
     environment:
-      MYSQL_DATABASE: dd
+      MYSQL_DATABASE: dice-dout
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ".mysql:/var/lib/mysql"
